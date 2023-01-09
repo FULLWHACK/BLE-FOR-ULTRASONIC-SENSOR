@@ -11,9 +11,9 @@ bool deviceConnected = false;
 bool lastDeviceConnected = false;
 
 // UUID FOR BLE SERVER
-#define SERVICE_UUID           "A2F09DE1-74AC-4CD4-A64B-1DB8BF4C9842" // UART
-#define CHARACTERISTIC_UUID_RX "8826BDA9-E59F-4146-8B66-0B71D7D440E0"
-#define CHARACTERISTIC_UUID_TX "85232B27-1456-454B-96FB-957690D4FC9F"
+#define SERVICE_UUID           "6E400001-B5A3-F393-E0A9-E50E24DCCA9E" // UART
+#define CHARACTERISTIC_UUID_RX "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
+#define CHARACTERISTIC_UUID_TX "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
 
 // SERVER CALLBACKS TO MONITOR CONNECTION STATUS
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -112,7 +112,10 @@ void loop() {
   digitalWrite(trigPin, LOW);
   
   // Read the echoPin. pulseIn() returns the duration (length of the pulse) in microseconds:
+  //duration = analogRead(echoPin);
   duration = pulseIn(echoPin, HIGH);
+  
+  
   
   // Calculate the distance:
   distanceValue = duration*0.034/2;
@@ -124,7 +127,7 @@ void loop() {
     pCharacteristic->setValue(distance);
     
     pCharacteristic->notify(); // Send Value to app
-    Serial.println("Distance = ");
+    Serial.print("Distance = ");
     Serial.print(distance);
     Serial.println(" cm");
     delay(1500);
@@ -132,6 +135,7 @@ void loop() {
   }
       // HANDLE CLIENT DISCONNECTION
     if (!deviceConnected && lastDeviceConnected) {
+        Serial.print("Device Disconnected!");
         delay(500); // give the bluetooth stack the chance to get things ready
         pServer->startAdvertising(); // restart advertising
         Serial.println("Restarting Service...");
