@@ -122,7 +122,9 @@ void loop() {
 
     // Conver to char array
   char distance[8];
-  dtostrf(distanceValue, 1, 2, distance);
+  // <SRC(FLOAT)> <DIGITS> <DECIMALS> <DESTINATION(STRING)>
+  //dtostrf(distanceValue, 1, 2, distance);
+    dtostrf(distanceValue, 1, 0, distance);
   
     pCharacteristic->setValue(distance);
     
